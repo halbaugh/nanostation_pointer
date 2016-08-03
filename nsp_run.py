@@ -3,6 +3,9 @@ import json
 import os
 import sys
 import gpsMath as gps
+import RPi.GPIO as GPIO
+import time
+import stepper
 
 nsp_settings_path = os.path.dirname(os.path.abspath(__file__)) + "/nsp_settings.json"
 
@@ -13,6 +16,7 @@ class Nsp(object):
         self.nanoPos = self.settings["nanoPos"]
         self.lastPos = self.settings["lastPos"]
         self.target = [float(raw_input("Lat?")), float(raw_input("Lon?"))]
+        self.bearing = self.settings["stepperBearing"]
     
     def loadSettings(self):
         self.settings = json.load(open(nsp_settings_path))
@@ -22,9 +26,9 @@ class Nsp(object):
         
     def displayInfo(self):
         print "NS @ - ", self.nanoPos
-        print "Last Target @ - ", self.lastPos
-        print "Target @ ", self.target
-    
+        print "Current Bearing ", self.bearing
+        print "Last Target @ ", self.lastPos
+        print "Target @ ", self.target 
     
 def saveSettings(nspObj):
     nspObj.settings["lastPos"] = nspObj.target
@@ -34,9 +38,18 @@ def saveSettings(nspObj):
 
     
 myNsp = Nsp()
+myMotor = stepper.Stepper()
 
 myNsp.displayInfo()
 newBearing = myNsp.calcBearing()
+print "New Bearing - ", newBearing
+'''
+delay = raw_input("Delay between steps (milliseconds)?")
+steps = raw_input("How many steps forward? ")
+forward(int(delay) / 1000.0, int(steps))
+steps = raw_input("How many steps backwards? ")
+backwards(int(delay) / 1000.0, int(steps))
+'''
 
 #saves settings back to .json
 

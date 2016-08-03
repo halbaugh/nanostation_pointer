@@ -1,56 +1,54 @@
 import RPi.GPIO as GPIO
 import time
+
+class Stepper(object):
+  
+  def __init__(self):
+    GPIO.setmode(GPIO.BCM)
  
-GPIO.setmode(GPIO.BCM)
+    self.enable_pin = 18
+    self.coil_A_1_pin = 4
+    self.coil_A_2_pin = 17
+    self.coil_B_1_pin = 23
+    self.coil_B_2_pin = 24
+     
+    GPIO.setup(self.enable_pin, GPIO.OUT)
+    GPIO.setup(self.coil_A_1_pin, GPIO.OUT)
+    GPIO.setup(self.coil_A_2_pin, GPIO.OUT)
+    GPIO.setup(self.coil_B_1_pin, GPIO.OUT)
+    GPIO.setup(self.coil_B_2_pin, GPIO.OUT)
+     
+    GPIO.output(self.enable_pin, 1)
+      
  
-enable_pin = 18
-coil_A_1_pin = 4
-coil_A_2_pin = 17
-coil_B_1_pin = 23
-coil_B_2_pin = 24
+  def forward(self,delay, steps):  
+    for i in range(0, steps):
+      self.setStep(1, 0, 1, 0)
+      time.sleep(delay)
+      self.setStep(0, 1, 1, 0)
+      time.sleep(delay)
+      self.setStep(0, 1, 0, 1)
+      time.sleep(delay)
+      self.setStep(1, 0, 0, 1)
+      time.sleep(delay)
  
-GPIO.setup(enable_pin, GPIO.OUT)
-GPIO.setup(coil_A_1_pin, GPIO.OUT)
-GPIO.setup(coil_A_2_pin, GPIO.OUT)
-GPIO.setup(coil_B_1_pin, GPIO.OUT)
-GPIO.setup(coil_B_2_pin, GPIO.OUT)
- 
-GPIO.output(enable_pin, 1)
- 
-def forward(delay, steps):  
-  for i in range(0, steps):
-    setStep(1, 0, 1, 0)
-    time.sleep(delay)
-    setStep(0, 1, 1, 0)
-    time.sleep(delay)
-    setStep(0, 1, 0, 1)
-    time.sleep(delay)
-    setStep(1, 0, 0, 1)
-    time.sleep(delay)
- 
-def backwards(delay, steps):  
-  for i in range(0, steps):
-    setStep(1, 0, 0, 1)
-    time.sleep(delay)
-    setStep(0, 1, 0, 1)
-    time.sleep(delay)
-    setStep(0, 1, 1, 0)
-    time.sleep(delay)
-    setStep(1, 0, 1, 0)
-    time.sleep(delay)
+  def backwards(self, delay, steps):  
+    for i in range(0, steps):
+      self.setStep(1, 0, 0, 1)
+      time.sleep(delay)
+      self.setStep(0, 1, 0, 1)
+      time.sleep(delay)
+      self.setStep(0, 1, 1, 0)
+      time.sleep(delay)
+      self.setStep(1, 0, 1, 0)
+      time.sleep(delay)
  
   
-def setStep(w1, w2, w3, w4):
-  GPIO.output(coil_A_1_pin, w1)
-  GPIO.output(coil_A_2_pin, w2)
-  GPIO.output(coil_B_1_pin, w3)
-  GPIO.output(coil_B_2_pin, w4)
- 
-while True:
-  delay = raw_input("Delay between steps (milliseconds)?")
-  steps = raw_input("How many steps forward? ")
-  forward(int(delay) / 1000.0, int(steps))
-  #steps = raw_input("How many steps backwards? ")
-  backwards(int(delay) / 1000.0, int(steps))
-  
+  def setStep(self, w1, w2, w3, w4):
+    GPIO.output(self.coil_A_1_pin, w1)
+    GPIO.output(self.coil_A_2_pin, w2)
+    GPIO.output(self.coil_B_1_pin, w3)
+    GPIO.output(self.coil_B_2_pin, w4)
+
+
   
