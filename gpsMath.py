@@ -8,7 +8,7 @@ import math
 def calculate_initial_compass_bearing(pointA, pointB):
     
     if (type(pointA) != list) or (type(pointB) != list):
-        raise TypeError("Only tuples are supported as arguments")
+        raise TypeError("Only lists are supported as arguments")
 
     lat1 = math.radians(pointA[0])
     lat2 = math.radians(pointB[0])
@@ -21,7 +21,9 @@ def calculate_initial_compass_bearing(pointA, pointB):
 
     initial_bearing = math.atan2(x, y)
 
-
+    # Now we have the initial bearing but math.atan2 return values
+    # from -180 to + 180 which is not what we want for a compass bearing
+    # The solution is to normalize the initial bearing as shown below
     initial_bearing = math.degrees(initial_bearing)
     compass_bearing = (initial_bearing + 360) % 360
 
