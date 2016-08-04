@@ -2,7 +2,9 @@ import RPi.GPIO as GPIO
 import time
 
 class Stepper(object):
-  
+  #initializes the motor
+  #requires current bearing and new bearing
+  #can be set later on if needed
   def __init__(self,cur,target):
     GPIO.setmode(GPIO.BCM)
  
@@ -64,7 +66,9 @@ class Stepper(object):
     
   def getTargetBearing(self):
     return self.targetBearing
-    
+  
+  #calculates the shortest direction to go it
+  #returns a list of (string(direction),int(degreeBearing))
   def dirCalc(self):
     cur = self.currentBearing
     tar = self.targetBearing
@@ -89,6 +93,8 @@ class Stepper(object):
     
     return turnInstruction
     
+  #Turns the motor to the new bearing
+  #Converts Degrees to Steps and then runs
   def turn(self,turnInstruction):
     steps = (turnInstruction[1]/360)*512
     if("clockwise" in turnInstruction[0]):
