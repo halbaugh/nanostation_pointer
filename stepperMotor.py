@@ -24,7 +24,7 @@ class Stepper(object):
     self.targetBearing = target
       
  
-  def forward(self,delay, steps):  
+  def turnClockwise(self,delay, steps):  
     for i in range(0, steps):
       self.setStep(1, 0, 1, 0)
       time.sleep(delay)
@@ -35,7 +35,7 @@ class Stepper(object):
       self.setStep(1, 0, 0, 1)
       time.sleep(delay)
  
-  def backwards(self, delay, steps):  
+  def turnCounterclockwise(self, delay, steps):  
     for i in range(0, steps):
       self.setStep(1, 0, 0, 1)
       time.sleep(delay)
@@ -88,5 +88,12 @@ class Stepper(object):
     turnInstruction = [turnDirection,turnDegree]
     
     return turnInstruction
+    
+  def turn(self,turnInstruction):
+    steps = (turnInstruction[1]/360)*512
+    if("clockwise" in turnInstruction[0]):
+      self.turnClockwise(.1,steps)
+    else:
+        self.turnCounterclockwise(.1,steps)
       
   

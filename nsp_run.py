@@ -24,6 +24,9 @@ class Nsp(object):
     def calcBearing(self):
         return gps.calculate_initial_compass_bearing(self.nanoPos,self.target)
         
+    def getBearing(self):
+        return self.bearing
+        
     def displayInfo(self):
         print "NS @ - ", self.nanoPos
         print "Current Bearing ", self.bearing
@@ -34,28 +37,21 @@ def saveSettings(nspObj):
     nspObj.settings["lastPos"] = nspObj.target
     with open(nsp_settings_path,"w") as f:
         f.write(json.dumps(nspObj.settings))
-def turnRight():    
+    
 
 myNsp = Nsp()
-myMotor = step.Stepper()
 
 myNsp.displayInfo()
+
+currentBearing = myNsp.getBearing()
 newBearing = myNsp.calcBearing()
 
-print "New Bearing - ", newBearing
-'''
-delay = raw_input("Delay between steps (milliseconds)?")
-steps = raw_input("How many steps forward? ")
-forward(int(delay) / 1000.0, int(steps))
-steps = raw_input("How many steps backwards? ")
-backwards(int(delay) / 1000.0, int(steps))
-'''
-'''
-if((newBearing-bearing) < 180):
-    turnRight(newBearing-bearing)
-else:
-    turnLeft(newBearing-bearing)
-'''
+myMotor = step.Stepper(currentBearing, newBearing)
+
+turnInstruction = myMotor.dirCalc()
+
+myMotor.turn(turnInstruction)
+
 #saves settings back to .json
 
 atexit.register(saveSettings, myNsp)
