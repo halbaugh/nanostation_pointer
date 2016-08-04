@@ -3,7 +3,7 @@ import time
 
 class Stepper(object):
   
-  def __init__(self):
+  def __init__(self,cur,target):
     GPIO.setmode(GPIO.BCM)
  
     self.enable_pin = 18
@@ -19,6 +19,9 @@ class Stepper(object):
     GPIO.setup(self.coil_B_2_pin, GPIO.OUT)
      
     GPIO.output(self.enable_pin, 1)
+    
+    self.currentBearing = cur
+    self.targetBearing = target
       
  
   def forward(self,delay, steps):  
@@ -50,5 +53,40 @@ class Stepper(object):
     GPIO.output(self.coil_B_1_pin, w3)
     GPIO.output(self.coil_B_2_pin, w4)
 
-
+  def setCurrentBearing(self,val):
+    self.currentBearing = val
+    
+  def getCurrentBearing(self):
+    return self.currentBearing
+    
+  def setTargetBearing(self,val):
+    self.targetBearing = val
+    
+  def getTargetBearing(self):
+    return self.targetBearing
+    
+  def dirCalc(self):
+    cur = self.currentBearing
+    tar = self.targetBearing
+    
+    turnDegree = 0
+    turnDirection = ""
+    
+    if(cur > tar):
+      turnDegree = cur - tar
+      turnDirection = "counterclockwise"
+      if(turnDegree > 180):
+        turnDegree = 180 - (turnDegree - 180)
+        turnDirection = "clockwise"
+    else:
+      turnDegree = tar - cur
+      turnDirection = "clockwise"
+      if(turnDegree > 180):
+        turnDegree = 180 - (turnDegree - 180)
+        turnDirection = "counterclockwise"
+        
+    turnInstruction = [turnDirection,turnDegree]
+    
+    return turnInstruction
+      
   
