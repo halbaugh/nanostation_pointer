@@ -32,8 +32,14 @@ class Nsp(object):
     def getBearing(self):
         return self.bearing
         
+    def setBearing(self,bearing):
+        self.bearing = bearing
+        
     def getTargetBearing(self):
         return self.targetBearing
+        
+    def setTargetBearing(self,bearing):
+        self.targetBearing = bearing
         
     def displayInfo(self):
         if("gps" in myNsp.runMode):
@@ -48,6 +54,9 @@ class Nsp(object):
 def saveSettings(nspObj):
     if("gps" in myNsp.runMode):
         nspObj.settings["lastPos"] = nspObj.target
+    
+    nspObj.settings["stepperBearing"] = nspObj.targetBearing
+    
     with open(nsp_settings_path,"w") as f:
         f.write(json.dumps(nspObj.settings))
     
@@ -58,11 +67,10 @@ if("gps" in myNsp.runMode):
     
     myNsp.displayInfo()
     
-    currentBearing = myNsp.getBearing()
     print "current bearing is ", currentBearing
-    newBearing = myNsp.calcBearing()
-    print "new calculated bearing is ", newBearing
-    myMotor = step.Stepper(currentBearing, newBearing)
+    myNsp.setTargetBearing(myNsp.calcBearing())
+    print "new calculated bearing is ", myNsp.getTargetBearing()
+    myMotor = step.Stepper(myNsp.getBearing() , myNsp.getTargetBearing())
     print "Made my motor."
     
     turnInstruction = myMotor.dirCalc()
