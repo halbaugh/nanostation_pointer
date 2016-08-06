@@ -67,10 +67,9 @@ if("gps" in myNsp.runMode):
     
     myNsp.displayInfo()
     
-    print "current bearing is ", currentBearing
     myNsp.setTargetBearing(myNsp.calcBearing())
     print "new calculated bearing is ", myNsp.getTargetBearing()
-    myMotor = step.Stepper(myNsp.getBearing() , myNsp.getTargetBearing())
+    myMotor = step.Stepper(myNsp.getBearing()   , myNsp.getTargetBearing())
     print "Made my motor."
     
     turnInstruction = myMotor.dirCalc()
@@ -85,7 +84,7 @@ if("gps" in myNsp.runMode):
     
 if("bearing" in myNsp.runMode):
     myNsp.displayInfo()
-    
+    print "cur bearing:tar bearing --- ", myNsp.getBearing(), myNsp.getTargetBearing()
     myMotor = step.Stepper(myNsp.getBearing(), myNsp.getTargetBearing())
     print "Made my motor."
     
