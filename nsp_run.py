@@ -15,7 +15,12 @@ class Nsp(object):
         self.loadSettings()
         self.nanoPos = self.settings["nanoPos"]
         self.lastPos = self.settings["lastPos"]
-        self.target = [float(raw_input("Lat?")), float(raw_input("Lon?"))]
+        if("gps" in raw_input("Gps or Bearing mode?")):
+            self.target = [float(raw_input("Lat?")), float(raw_input("Lon?"))]
+            self.runMode = "gps"
+        else:
+            self.runMode = "bearing"
+            self.targetBearing = int(raw_input("Bearing?"))
         self.bearing = self.settings["stepperBearing"]
     
     def loadSettings(self):
@@ -27,38 +32,65 @@ class Nsp(object):
     def getBearing(self):
         return self.bearing
         
+    def getTargetBearing(self):
+        return self.targetBearing
+        
     def displayInfo(self):
-        print "NS @ - ", self.nanoPos
-        print "Current Bearing ", self.bearing
-        print "Last Target @ ", self.lastPos
-        print "New Target @ ", self.target 
+        if("gps" in myNsp.runMode):
+            print "NS @ - ", self.nanoPos
+            print "Current Bearing ", self.bearing
+            print "Last Target @ ", self.lastPos
+            print "New Target @ ", self.target
+        if("bearing" in myNsp.runMode):
+            print "Current Bearing ", self.bearing
+            print "Target Bearing ", self.targetBearing
     
 def saveSettings(nspObj):
-    nspObj.settings["lastPos"] = nspObj.target
+    if("gps" in myNsp.runMode):
+        nspObj.settings["lastPos"] = nspObj.target
     with open(nsp_settings_path,"w") as f:
         f.write(json.dumps(nspObj.settings))
     
 
 myNsp = Nsp()
-
-myNsp.displayInfo()
-
-currentBearing = myNsp.getBearing()
-print "current bearing is ", currentBearing
-newBearing = myNsp.calcBearing()
-print "new calculated bearing is ", newBearing
-myMotor = step.Stepper(currentBearing, newBearing)
-print "Made my motor."
-
-turnInstruction = myMotor.dirCalc()
-print "calculated turnInstruction"
-
-myMotor.turn(turnInstruction)
-print "Told motor to turn."
-#saves settings back to .json
-
-atexit.register(saveSettings, myNsp)
-print "Saved stats and exited."
+if("gps" in myNsp.runMode):
+    
+    
+    myNsp.displayInfo()
+    
+    currentBearing = myNsp.getBearing()
+    print "current bearing is ", currentBearing
+    newBearing = myNsp.calcBearing()
+    print "new calculated bearing is ", newBearing
+    myMotor = step.Stepper(currentBearing, newBearing)
+    print "Made my motor."
+    
+    turnInstruction = myMotor.dirCalc()
+    print "calculated turnInstruction"
+    
+    myMotor.turn(turnInstruction)
+    print "Told motor to turn."
+    #saves settings back to .json
+    
+    atexit.register(saveSettings, myNsp)
+    print "Saved stats and exited."
+    
+if("bearing" in myNsp.runMode):
+    myNsp.displayInfo()
+    
+    myMotor = step.Stepper(myNsp.getBearing(), myNsp.getTargetBearing())
+    print "Made my motor."
+    
+    turnInstruction = myMotor.dirCalc()
+    print "calculated turnInstruction"
+    
+    myMotor.turn(turnInstruction)
+    print "Told motor to turn."
+    #saves settings back to .json
+    
+    atexit.register(saveSettings, myNsp)
+    print "Saved stats and exited."
+    
 
 
 

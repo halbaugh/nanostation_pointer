@@ -33,27 +33,25 @@ class Stepper(object):
   def turnClockwise(self,delay, steps):
     print "in turnClockwise.", steps
     for i in range(0, steps):
-      print "step in turnClockwise."
-      self.setStep(1, 0, 1, 0)
-      time.sleep(delay)
-      self.setStep(0, 1, 1, 0)
+      self.setStep(1, 0, 0, 1)
       time.sleep(delay)
       self.setStep(0, 1, 0, 1)
       time.sleep(delay)
-      self.setStep(1, 0, 0, 1)
+      self.setStep(0, 1, 1, 0)
+      time.sleep(delay)
+      self.setStep(1, 0, 1, 0)
       time.sleep(delay)
  
   def turnCounterclockwise(self, delay, steps):
     print "in turnCounterclockwise.", steps
     for i in range(0, steps):
-      print "step in turnCounterclockwise."
-      self.setStep(1, 0, 0, 1)
-      time.sleep(delay)
-      self.setStep(0, 1, 0, 1)
+      self.setStep(1, 0, 1, 0)
       time.sleep(delay)
       self.setStep(0, 1, 1, 0)
       time.sleep(delay)
-      self.setStep(1, 0, 1, 0)
+      self.setStep(0, 1, 0, 1)
+      time.sleep(delay)
+      self.setStep(1, 0, 0, 1)
       time.sleep(delay)
  
   
