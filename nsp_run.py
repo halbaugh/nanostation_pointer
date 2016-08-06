@@ -31,7 +31,7 @@ class Nsp(object):
         print "NS @ - ", self.nanoPos
         print "Current Bearing ", self.bearing
         print "Last Target @ ", self.lastPos
-        print "Target @ ", self.target 
+        print "New Target @ ", self.target 
     
 def saveSettings(nspObj):
     nspObj.settings["lastPos"] = nspObj.target
@@ -44,8 +44,9 @@ myNsp = Nsp()
 myNsp.displayInfo()
 
 currentBearing = myNsp.getBearing()
+print "current bearing is ", currentBearing
 newBearing = myNsp.calcBearing()
-
+print "new calculated bearing is ", newBearing
 myMotor = step.Stepper(currentBearing, newBearing)
 print "Made my motor."
 
