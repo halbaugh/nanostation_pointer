@@ -104,10 +104,7 @@ class Stepper(object):
   #Converts Degrees to Steps and then runs
   def turn(self,turnInstruction):
     delay = .01
-    if("bearing" not in turnInstruction[2]):
-        steps = int((turnInstruction[1]/360)*512)
-    else:
-        steps = turnInstruction[1]
+    steps = int((turnInstruction[1]/360)*512)
 
     print "In myMotor.turn with turn instructions:", turnInstruction
     print "Converted to steps: ", steps
