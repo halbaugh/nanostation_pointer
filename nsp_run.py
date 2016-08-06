@@ -47,15 +47,17 @@ currentBearing = myNsp.getBearing()
 newBearing = myNsp.calcBearing()
 
 myMotor = step.Stepper(currentBearing, newBearing)
+print "Made my motor."
 
 turnInstruction = myMotor.dirCalc()
+print "calculated turnInstruction"
 
 myMotor.turn(turnInstruction)
-
+print "Told motor to turn."
 #saves settings back to .json
 
 atexit.register(saveSettings, myNsp)
-
+print "Saved stats and exited."
 
 
 
