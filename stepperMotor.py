@@ -1,11 +1,14 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setwarnings(False) 
+
 class Stepper(object):
   #initializes the motor
   #requires current bearing and new bearing
   #can be set later on if needed
   def __init__(self,cur,target):
+    
     GPIO.setmode(GPIO.BCM)
  
     self.enable_pin = 18
@@ -14,7 +17,7 @@ class Stepper(object):
     self.coil_B_1_pin = 23
     self.coil_B_2_pin = 24
     
-    GPIO.setwarnings(False) 
+    
     GPIO.setup(self.enable_pin, GPIO.OUT)
     GPIO.setup(self.coil_A_1_pin, GPIO.OUT)
     GPIO.setup(self.coil_A_2_pin, GPIO.OUT)
@@ -25,7 +28,7 @@ class Stepper(object):
     
     self.currentBearing = cur
     self.targetBearing = target
-      
+    print "end of motor init"  
  
   def turnClockwise(self,delay, steps):  
     for i in range(0, steps):
