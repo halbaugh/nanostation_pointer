@@ -100,6 +100,6 @@ class Stepper(object):
     if("clockwise" in turnInstruction[0]):
       self.turnClockwise(.1,steps)
     else:
-        self.turnCounterclockwise(.1,steps)
+      self.turnCounterclockwise(.1,steps)
       
   
