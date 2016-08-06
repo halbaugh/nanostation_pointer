@@ -31,7 +31,7 @@ class Stepper(object):
     print "end of motor init"  
  
   def turnClockwise(self,delay, steps):
-    print "in turnClockwise."
+    print "in turnClockwise.", steps
     for i in range(0, steps):
       print "step in turnClockwise."
       self.setStep(1, 0, 1, 0)
@@ -44,7 +44,7 @@ class Stepper(object):
       time.sleep(delay)
  
   def turnCounterclockwise(self, delay, steps):
-    print "in turnCounterclockwise."
+    print "in turnCounterclockwise.", steps
     for i in range(0, steps):
       print "step in turnCounterclockwise."
       self.setStep(1, 0, 0, 1)
@@ -98,18 +98,20 @@ class Stepper(object):
         turnDegree = 180 - (turnDegree - 180)
         turnDirection = "counterclockwise"
         
-    turnInstruction = [turnDirection, int(turnDegree)]
+    turnInstruction = [turnDirection, turnDegree]
     print "returning turnInstruction:" , turnInstruction
     return turnInstruction
     
   #Turns the motor to the new bearing
   #Converts Degrees to Steps and then runs
   def turn(self,turnInstruction):
-    steps = (turnInstruction[1]/360)*512
+    delay = .01
+    steps = int((turnInstruction[1]/360)*512)
     print "In myMotor.turn with turn instructions:", turnInstruction
+    print "Converted to steps: ", steps
     if("clockwise" in turnInstruction[0]):
-      self.turnClockwise(.1,steps)
+      self.turnClockwise(delay,steps)
     else:
-      self.turnCounterclockwise(.1,steps)
+      self.turnCounterclockwise(delay,steps)
       
   
