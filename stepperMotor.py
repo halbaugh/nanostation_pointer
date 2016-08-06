@@ -105,7 +105,7 @@ class Stepper(object):
   def turn(self,turnInstruction):
     delay = .01
     print "bearing before conversion:", turnInstruction[1]
-    steps = int((turnInstruction[1]/360)*512)
+    steps = int((int(turnInstruction[1])/360)*512)
     print "bearing after :", steps
 
     print "In myMotor.turn with turn instructions:", turnInstruction

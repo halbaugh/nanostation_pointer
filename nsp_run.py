@@ -54,7 +54,7 @@ class Nsp(object):
 def saveSettings(nspObj):
     if("gps" in myNsp.runMode):
         nspObj.settings["lastPos"] = nspObj.target
-    
+    print "saving target bearing:", nspObj.targetBearing
     nspObj.settings["stepperBearing"] = nspObj.targetBearing
     
     with open(nsp_settings_path,"w") as f:
