@@ -13,7 +13,8 @@ class Stepper(object):
     self.coil_A_2_pin = 17
     self.coil_B_1_pin = 23
     self.coil_B_2_pin = 24
-     
+    
+    GPIO.setwarnings(False) 
     GPIO.setup(self.enable_pin, GPIO.OUT)
     GPIO.setup(self.coil_A_1_pin, GPIO.OUT)
     GPIO.setup(self.coil_A_2_pin, GPIO.OUT)
@@ -89,7 +90,7 @@ class Stepper(object):
         turnDegree = 180 - (turnDegree - 180)
         turnDirection = "counterclockwise"
         
-    turnInstruction = [turnDirection,turnDegree]
+    turnInstruction = [turnDirection,int(turnDegree)]
     
     return turnInstruction
     

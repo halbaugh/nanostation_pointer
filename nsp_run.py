@@ -5,7 +5,7 @@ import sys
 import gpsMath as gps
 import RPi.GPIO as GPIO
 import time
-import stepper as step
+import stepperMotor  as step
 
 nsp_settings_path = os.path.dirname(os.path.abspath(__file__)) + "/nsp_settings.json"
 
