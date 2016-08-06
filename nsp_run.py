@@ -82,6 +82,7 @@ if("bearing" in myNsp.runMode):
     print "Made my motor."
     
     turnInstruction = myMotor.dirCalc()
+    turnInstruction.append("bearing")
     print "calculated turnInstruction"
     
     myMotor.turn(turnInstruction)
